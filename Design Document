@@ -1,0 +1,58 @@
+Pratick Rai
+Tristen Faison 
+Parker Munson
+
+
+CSC221 Project: design document. 
+
+Overview:
+
+Our project is a sudoku solver to quickly and efficiently solve sudoku challenges. Our plan is to implement a recursive, depth-first, backtracking algorithm. 
+
+The program will take in a pre-filled sudoku puzzles and output a solved version. 
+
+Analysis:
+
+The program should:
+
+take in a 9x9 grids as inputs. 0 for nothing and 1-9 numbers as the numbers in the cell. 
+
+The algorithm should then convert the puzzle to a exact cover matrix and use a recursive backtracking algorithm.
+
+Finally, it should output the completed grid, or state the puzzle has no solution.
+
+Solution:
+
+It’s considered solved when the 9x9 grid has every cell filled where the cells do not violate sudoku’s rules. 
+
+Expressing.
+
+This is the main algorithm to solve the sudoku
+
+FUNCTION SolveSudoku(grid):
+    # Step 1: Initialize an empty solution list to store filled values for the solved grid
+    Initialize empty solution list
+    
+    # Step 2: Convert the Sudoku puzzle into an exact cover matrix representation
+    matrix = CreateExactCoverMatrix(grid)
+    
+    # Step 3: Add constraints for any pre-filled numbers in the grid
+    FOR each cell in grid:
+        IF cell is not empty:
+            # Mark constraints as satisfied for the pre-filled cell
+            AddConstraint(matrix, cell.row, cell.column, cell.value)
+    
+    # Step 4: using Algorithm X 
+
+    success = UseAlgorithmX(matrix, solution)
+    
+    # Step 5: If a solution is found, return the completed Sudoku grid
+    IF success:
+        RETURN ConvertSolutionToGrid(solution)
+    ELSE:
+        RETURN "No solution found"
+
+
+
+
+
