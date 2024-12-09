@@ -1,58 +1,63 @@
+Project Team:
 Pratick Rai
-Tristen Faison 
+Tristen Faison
 Parker Munson
+Course: CSC221
 
+Overview
+We’re creating a Sudoku solver that can handle any standard puzzle quickly and efficiently. To achieve this, we’ll be using a recursive, depth-first search approach combined with Donald Knuth’s “Dancing Links” (DLX) algorithm. By turning the Sudoku board into what’s called an “exact cover” problem, DLX lets us handle all the puzzle’s constraints in a smart and organized way.
 
-CSC221 Project: design document. 
+What the Program Does
+Input:
+You give the program a 9x9 Sudoku grid:
 
-Overview:
+0 represents an empty cell.
+1–9 are already filled-in cells.
+Process:
+The solver checks if the puzzle is solvable. If it is, it uses DLX to find a correct solution.
 
-Our project is a sudoku solver to quickly and efficiently solve sudoku challenges. Our plan is to implement a recursive, depth-first, backtracking algorithm. 
+Output:
 
-The program will take in a pre-filled sudoku puzzles and output a solved version. 
+If the puzzle can be solved, the program returns a completed Sudoku board.
+If it can’t be solved, it lets you know that no solution exists.
+Key Requirements
+Solvability Check:
+Our solver must correctly determine whether the puzzle can be solved or not.
 
-Analysis:
+Sudoku Rules:
 
-The program should:
+Each row must have the digits 1–9 with no repeats.
+Each column must have the digits 1–9 with no repeats.
+Each 3x3 box must have the digits 1–9 with no repeats.
+Constraints
+Our solver should be efficient enough for typical Sudoku puzzles. If a solution doesn’t exist, it should clearly say so rather than wasting time.
 
-take in a 9x9 grids as inputs. 0 for nothing and 1-9 numbers as the numbers in the cell. 
+How We Represent the Data
+Board Setup:
+We’ll store the puzzle as a 9x9 grid (a list of lists in Python), where board[row][col] refers to one specific cell.
 
-The algorithm should then convert the puzzle to a exact cover matrix and use a recursive backtracking algorithm.
+Exact Cover Matrix:
+We’ll convert the Sudoku into an “exact cover” problem. This means:
 
-Finally, it should output the completed grid, or state the puzzle has no solution.
+Each possible way to place a digit in a cell corresponds to a row in our matrix.
+The different Sudoku constraints (like which digits go in which rows, columns, or boxes) correspond to columns in the matrix.
+Dancing Links (DLX):
+Dancing Links is a clever technique that uses linked nodes to quickly try and retract decisions as we search for a solution. By “covering” and “uncovering” columns, we can efficiently explore possibilities without unnecessary work.
 
-Solution:
+Step-by-Step Plan
+Get the Puzzle:
+We’ll start by reading the Sudoku grid from a user interface or a file.
 
-It’s considered solved when the 9x9 grid has every cell filled where the cells do not violate sudoku’s rules. 
+Build the Exact Cover Matrix:
+For each empty cell, consider all digits (1–9) that could potentially fit there. Each choice creates a row in the matrix. We’ll have 324 columns total since Sudoku has 81 cells and multiple constraints per cell.
 
-Expressing.
+Apply Known Constraints:
+If some cells are already filled, we can “cover” their constraints right away in the matrix, reducing the complexity before we even start.
 
-This is the main algorithm to solve the sudoku
+Run Algorithm X (DLX):
 
-FUNCTION SolveSudoku(grid):
-    # Step 1: Initialize an empty solution list to store filled values for the solved grid
-    Initialize empty solution list
-    
-    # Step 2: Convert the Sudoku puzzle into an exact cover matrix representation
-    matrix = CreateExactCoverMatrix(grid)
-    
-    # Step 3: Add constraints for any pre-filled numbers in the grid
-    FOR each cell in grid:
-        IF cell is not empty:
-            # Mark constraints as satisfied for the pre-filled cell
-            AddConstraint(matrix, cell.row, cell.column, cell.value)
-    
-    # Step 4: using Algorithm X 
-
-    success = UseAlgorithmX(matrix, solution)
-    
-    # Step 5: If a solution is found, return the completed Sudoku grid
-    IF success:
-        RETURN ConvertSolutionToGrid(solution)
-    ELSE:
-        RETURN "No solution found"
-
-
-
-
-
+Pick the constraint column with the fewest possibilities (this is a heuristic to speed up the search).
+Cover that column.
+Choose one of the possible rows (digit placements) to satisfy that constraint.
+Recursively solve the reduced matrix.
+If you hit a dead end, backtrack by uncovering the columns and trying another possibility.
